@@ -1,8 +1,6 @@
-from django.contrib import admin
-from django.urls import include, path
-
-from .views import kruskal
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('resolver/', kruskal.as_view()),
+    path('resolver/', views.KruskalView.as_view(), name='kruskal'),
 ]
