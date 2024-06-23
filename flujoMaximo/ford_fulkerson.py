@@ -41,3 +41,20 @@ class GrafoFlujoMaximo:
                 v = u
 
         return max_flujo
+
+
+# Ejemplo de uso
+"""aristas = [
+    [0, 1, 16, 8],
+    [0, 2, 13, 5],
+    [1, 2, 10, 7],
+    [1, 3, 12, 14],
+    [2, 4, 14, 4],
+    [3, 4, 7, 10],
+    [3, 5, 20, 15],
+    [4, 5, 4, 6]
+]
+
+num_vertices = 6
+matriz_adyacencia = convertir_a_matriz_adyacencia_bidireccional(aristas, num_vertices)
+print(matriz_adyacencia)"""

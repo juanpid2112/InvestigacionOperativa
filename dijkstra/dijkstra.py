@@ -18,11 +18,11 @@ class GrafoDijkstra:
 
             visitados.add(nodo_actual)
 
-            for vecino, peso in self.grafo[nodo_actual]:
-                distancia_nueva = distancia_actual + peso
-
-                if distancia_nueva < distancia[vecino]:
-                    distancia[vecino] = distancia_nueva
-                    heapq.heappush(cola, (distancia_nueva, vecino))
+            for vecino, peso in enumerate(self.grafo[nodo_actual]):
+                if peso > 0:
+                    distancia_nueva = distancia_actual + peso
+                    if distancia_nueva < distancia[vecino]:
+                        distancia[vecino] = distancia_nueva
+                        heapq.heappush(cola, (distancia_nueva, vecino))
 
         return distancia
