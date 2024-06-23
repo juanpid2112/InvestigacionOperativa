@@ -3,9 +3,11 @@ import heapq
 class GrafoDijkstra:
     def __init__(self, grafo):
         self.grafo = grafo
+        self.V = len(grafo)
 
     def dijkstra(self, origen):
-        distancia = {nodo: float('infinity') for nodo in range(len(self.grafo))}
+        # Inicializar las distancias a infinito
+        distancia = {nodo: float('infinity') for nodo in range(self.V)}
         distancia[origen] = 0
         visitados = set()
         cola = [(0, origen)]  # (distancia, nodo)
@@ -25,4 +27,8 @@ class GrafoDijkstra:
                         distancia[vecino] = distancia_nueva
                         heapq.heappush(cola, (distancia_nueva, vecino))
 
-        return distancia
+        # Convertir el diccionario de distancias a una lista de listas
+        resultado = [[nodo, dist] for nodo, dist in distancia.items()]
+        
+        return resultado
+
