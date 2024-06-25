@@ -36,12 +36,16 @@ class DijkstraView(APIView):
                         "error": error
                     }, status=400)
                 origen = request.data.get('fuente', 1)
+                if origen == None:
+                    origen = 1
                 destino = request.data.get('sumidero', -1)
-                if destino == -1:
+                if destino == -1 or destino == None:
                     destino = self.buscarMaximo(aux)
-                
+                print (origen)
+                print (destino)
                 # Ajustar los índices para que empiecen desde 1
                 if origen < 1 or destino == -1:
+                    print (100)
                     return Response({
                         "rta": 0,
                         "error": "El nodo origen o destino es inválido."
@@ -57,6 +61,7 @@ class DijkstraView(APIView):
                     "error": "El número de nodos es requerido."
                 }, status=400)
         except Exception as e:
+            print (200)
             return Response({
                 "error": str(e),
                 'rta': 0
