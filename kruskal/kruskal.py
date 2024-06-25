@@ -1,51 +1,54 @@
 class GrafoKruskal:
     def __init__(self, grafo):
         self.grafo = grafo
-        self.vertices = len(grafo)
-        self.aristas = self.convertir_a_aristas()
+        self.V = len(grafo)
 
-    def convertir_a_aristas(self):
-        aristas = []
-        for i in range(self.vertices):
-            for j in range(i, self.vertices):
-                if self.grafo[i][j] != 0:
-                    aristas.append([i, j, self.grafo[i][j]])
-        return aristas
-
-    def find(self, parent, i):
+    def encontrar(self, parent, i):
         if parent[i] == i:
             return i
-        return self.find(parent, parent[i])
+        return self.encontrar(parent, parent[i])
 
     def union(self, parent, rank, x, y):
-        xroot = self.find(parent, x)
-        yroot = self.find(parent, y)
-        if rank[xroot] < rank[yroot]:
-            parent[xroot] = yroot
-        elif rank[xroot] > rank[yroot]:
-            parent[yroot] = xroot
+        raiz_x = self.encontrar(parent, x)
+        raiz_y = self.encontrar(parent, y)
+        
+        if rank[raiz_x] < rank[raiz_y]:
+            parent[raiz_x] = raiz_y
+        elif rank[raiz_x] > rank[raiz_y]:
+            parent[raiz_y] = raiz_x
         else:
-            parent[yroot] = xroot
-            rank[xroot] += 1
+            parent[raiz_y] = raiz_x
+            rank[raiz_x] += 1
 
     def kruskal(self):
-        result = []
-        i = 0
-        e = 0
-        self.aristas = sorted(self.aristas, key=lambda item: item[2])
+        resultado = []
+        i, e = 0, 0
+        aristas = []
+
+        for origen in range(self.V):
+            for destino in range(origen, self.V):
+                if self.grafo[origen][destino] > 0:
+                    aristas.append([origen, destino, self.grafo[origen][destino]])
+
+        aristas = sorted(aristas, key=lambda item: item[2])
+
         parent = []
         rank = []
-        for node in range(self.vertices):
-            parent.append(node)
+
+        for nodo in range(self.V):
+            parent.append(nodo)
             rank.append(0)
-        while e < self.vertices - 1:
-            u, v, w = self.aristas[i]
-            i = i + 1
-            x = self.find(parent, u)
-            y = self.find(parent, v)
+
+        while e < self.V - 1:
+            origen, destino, peso = aristas[i]
+            i += 1
+            x = self.encontrar(parent, origen)
+            y = self.encontrar(parent, destino)
+
             if x != y:
-                e = e + 1
-                result.append([u, v, w])
+                e += 1
+                resultado.append([origen, destino, peso])
                 self.union(parent, rank, x, y)
-        return result
+
+        return resultado
 
