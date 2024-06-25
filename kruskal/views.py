@@ -10,6 +10,18 @@ class KruskalView(APIView):
             if not [arista[0],arista[1]] in matriz:
                 matriz.append ([arista[0],arista[1]])
         return matriz
+    def comparar (self, grafo, base):
+        matriz = []
+        base = self.obtenerRelaciones(base)
+        for arista in grafo:
+            if not ([arista[0],arista[1]] in matriz) and not ([arista[1],arista[0]] in matriz):
+                if [arista[1],arista[0]] in base:
+                    matriz.append([arista[1],arista[0]])
+                else:
+                    matriz.append([arista[0],arista[1]])
+        print (matriz)
+        return matriz
+
     def post(self, request, *args, **kwargs):
         try:
             grafo = request.data.get('aristas', [])
@@ -20,6 +32,7 @@ class KruskalView(APIView):
                     "error": "El grafo es requerido."
                 }, status=400)
             if numNodos > 0:
+                aux = grafo
                 grafo, error = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
                 if grafo is None:
                     return Response({
@@ -28,7 +41,9 @@ class KruskalView(APIView):
                     }, status=400)
                 kruskal = GrafoKruskal(grafo)
                 mst = kruskal.kruskal()
-                return Response({'aristas': self.obtenerRelaciones(mst)})
+                mst =  self.obtenerRelaciones(mst)
+
+                return Response({'aristas':self.comparar(mst,aux)})
             return Response({
                 "rta": 0,
                 "error": "El número de nodos es requerido."

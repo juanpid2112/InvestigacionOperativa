@@ -75,7 +75,10 @@ class FlujoMaximoView(APIView):
                 if fuente <= 0 or fuente > numNodos or sumidero <= 0 or sumidero > numNodos:
                     return Response({
                         "rta": 0,
-                        "error": "El nodo fuente o sumidero es inválido."
+                        "error": "El nodo fuente o sumidero es inválido.",
+                        "fuente":fuente,
+                        "sumidero":sumidero
+
                     }, status=400)
 
                 flujo_maximo, iteraciones, aristas_actualizadas = GrafoFlujoMaximo(grafo).ford_fulkerson(fuente, sumidero)
