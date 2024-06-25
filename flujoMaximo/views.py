@@ -43,10 +43,15 @@ class FlujoMaximoView(APIView):
                     "rta": 0,
                     "error": "El grafo es requerido."
                 }, status=400)
-            fuente = request.data.get('fuente', 0)
+            fuente = request.data.get('fuente', -1)
             sumidero = request.data.get('sumidero', -1)
             numNodos = request.data.get('nodos', 0)
-            if numNodos > 0 and sumidero != -1:
+            if numNodos <= 0:
+                return Response({
+                    "error": "El numero de nodos es requerido.",
+                    'rta': 0
+                }, status=400)    
+            if fuente != 0 and sumidero != -1 :
                 grafo, error = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
                 if grafo is None:
                     return Response({
@@ -69,7 +74,7 @@ class FlujoMaximoView(APIView):
                     "aristas": self.acomodar(grafo_completo,aux)
                 })
             return Response({
-                "error": "El número de nodos y el sumidero son datos requeridos.",
+                "error": "La fuente y el sumidero son datos requeridos.",
                 'rta': 0
             }, status=400)
         except Exception as e:
