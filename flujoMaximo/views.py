@@ -11,6 +11,7 @@ class FlujoMaximoView(APIView):
                 matriz.append ([arista[0],arista[1]])
         return matriz
     def acomodar (self,grafo,grafoBase):
+        grafoAux = grafoBase
         grafoBase = self.obtenerRelaciones(grafoBase)
         print (grafoBase)
         matriz = []
@@ -22,6 +23,15 @@ class FlujoMaximoView(APIView):
             elif [arista[0],arista[1]] in grafoBase:
                 if not [arista[0],arista[1]] in matriz:
                     matriz.append(arista)
+        for arista in grafoAux:
+            esta = False
+            for aristaG in matriz:
+                if arista[0] == aristaG[0] and arista[1] == aristaG[1]:
+                    esta = True
+                    break
+            if not esta:
+                matriz.append (arista)
+
         return matriz
 
     def post(self, request, *args, **kwargs):
