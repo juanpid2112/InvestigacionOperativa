@@ -35,8 +35,8 @@ class DijkstraView(APIView):
                         "rta": 0,
                         "error": error
                     }, status=400)
-                origen = request.data.get('origen', 1)
-                destino = request.data.get('destino', -1)
+                origen = request.data.get('fuente', 1)
+                destino = request.data.get('sumidero', -1)
                 if destino == -1:
                     destino = self.buscarMaximo(aux)
                 
