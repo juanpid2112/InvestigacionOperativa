@@ -4,9 +4,30 @@ from .utils.convertir import convertir_a_matriz_adyacencia_bidireccional
 from .ford_fulkerson import GrafoFlujoMaximo
 
 class FlujoMaximoView(APIView):
+    def obtenerRelaciones (self,grafo):
+        matriz = []
+        for arista in grafo:
+            if not [arista[0],arista[1]] in matriz:
+                matriz.append ([arista[0],arista[1]])
+        return matriz
+    def acomodar (self,grafo,grafoBase):
+        grafoBase = self.obtenerRelaciones(grafoBase)
+        print (grafoBase)
+        matriz = []
+        for arista in grafo:
+            print ([arista[1],arista[0]])
+            if [arista[1],arista[0]] in grafoBase:
+                if not [arista[1],arista[0]] in matriz:
+                    matriz.append([arista[1],arista[0],arista[3],arista[2]])
+            elif [arista[0],arista[1]] in grafoBase:
+                if not [arista[0],arista[1]] in matriz:
+                    matriz.append(arista)
+        return matriz
+
     def post(self, request, *args, **kwargs):
         try:
             grafo = request.data.get('aristas', [])
+            aux = grafo
             if grafo == []:
                 return Response({
                     "rta": 0,
@@ -35,7 +56,7 @@ class FlujoMaximoView(APIView):
                 return Response({
                     "flujoMax": flujo_maximo,
                     "iteraciones": iteraciones,
-                    "aristas": grafo_completo
+                    "aristas": self.acomodar(grafo_completo,aux)
                 })
             return Response({
                 "error": "El número de nodos y el sumidero son datos requeridos.",

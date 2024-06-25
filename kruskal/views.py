@@ -4,6 +4,12 @@ from .kruskal import GrafoKruskal
 from .utils.convertir import convertir_a_matriz_adyacencia_bidireccional
 
 class KruskalView(APIView):
+    def obtenerRelaciones (self,grafo):
+        matriz = []
+        for arista in grafo:
+            if not [arista[0],arista[1]] in matriz:
+                matriz.append ([arista[0],arista[1]])
+        return matriz
     def post(self, request, *args, **kwargs):
         try:
             grafo = request.data.get('aristas', [])
@@ -22,7 +28,7 @@ class KruskalView(APIView):
                     }, status=400)
                 kruskal = GrafoKruskal(grafo)
                 mst = kruskal.kruskal()
-                return Response({'aristas': mst})
+                return Response({'aristas': self.obtenerRelaciones(mst)})
             return Response({
                 "rta": 0,
                 "error": "El número de nodos es requerido."

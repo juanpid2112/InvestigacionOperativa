@@ -4,6 +4,12 @@ from .dijkstra import GrafoDijkstra
 from .utils.convertir import convertir_a_matriz_adyacencia_bidireccional
 
 class DijkstraView(APIView):
+    def obtenerRelaciones (self,grafo):
+        matriz = []
+        for arista in grafo:
+            if not [arista[0],arista[1]] in matriz:
+                matriz.append ([arista[0],arista[1]])
+        return matriz
 
     def post(self, request, *args, **kwargs):
         try:
@@ -34,7 +40,7 @@ class DijkstraView(APIView):
                 dijkstra = GrafoDijkstra(grafo)
                 distancia, arcos = dijkstra.dijkstra(origen - 1, destino - 1)
                 
-                return Response({'distancia': distancia, 'aristas': arcos})
+                return Response({'distancia': distancia, 'aristas': self.obtenerRelaciones(arcos)})
             else:
                 return Response({
                     "rta": 0,
