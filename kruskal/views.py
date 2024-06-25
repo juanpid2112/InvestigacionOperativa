@@ -21,7 +21,11 @@ class KruskalView(APIView):
                     matriz.append([arista[0],arista[1]])
         print (matriz)
         return matriz
-
+    def obtenerPeso (self,grafo):
+        aux = 0
+        for arista in grafo:
+            aux += arista[2]
+        return aux
     def post(self, request, *args, **kwargs):
         try:
             grafo = request.data.get('aristas', [])
@@ -41,9 +45,13 @@ class KruskalView(APIView):
                     }, status=400)
                 kruskal = GrafoKruskal(grafo)
                 mst = kruskal.kruskal()
+                peso = self.obtenerPeso(mst)
                 mst =  self.obtenerRelaciones(mst)
 
-                return Response({'aristas':self.comparar(mst,aux)})
+                return Response({
+                    'aristas':self.comparar(mst,aux),
+                    "peso":peso
+                    })
             return Response({
                 "rta": 0,
                 "error": "El número de nodos es requerido."
