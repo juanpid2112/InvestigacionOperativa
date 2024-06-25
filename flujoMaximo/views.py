@@ -64,7 +64,7 @@ class FlujoMaximoView(APIView):
                     "error": "El numero de nodos es requerido.",
                     'rta': 0
                 }, status=400)    
-            if fuente != 0 and sumidero != -1 :
+            if fuente != 0 and sumidero != -1:
                 grafo, error = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
                 if grafo is None:
                     return Response({
