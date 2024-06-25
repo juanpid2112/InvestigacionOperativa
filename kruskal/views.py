@@ -20,11 +20,11 @@ class KruskalView(APIView):
                     "error": "El grafo es requerido."
                 }, status=400)
             if numNodos > 0:
-                grafo = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
+                grafo, error = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
                 if grafo is None:
                     return Response({
                         "rta": 0,
-                        "error": "El grafo contiene un error en su formato, o el número de nodos no es correcto."
+                        "error": error
                     }, status=400)
                 kruskal = GrafoKruskal(grafo)
                 mst = kruskal.kruskal()
