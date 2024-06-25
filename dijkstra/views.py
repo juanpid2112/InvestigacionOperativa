@@ -41,7 +41,7 @@ class DijkstraView(APIView):
                     destino = self.buscarMaximo(aux)
                 
                 # Ajustar los índices para que empiecen desde 1
-                if origen < 1 and destino == -1:
+                if origen < 1 or destino == -1:
                     return Response({
                         "rta": 0,
                         "error": "El nodo origen o destino es inválido."
