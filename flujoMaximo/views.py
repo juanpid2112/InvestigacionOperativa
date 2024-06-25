@@ -4,6 +4,15 @@ from .utils.convertir import convertir_a_matriz_adyacencia_bidireccional
 from .ford_fulkerson import GrafoFlujoMaximo
 
 class FlujoMaximoView(APIView):
+    def buscarMaximo (self,grafo):
+        aux = -1
+        for arista in grafo:
+            if arista[0] > aux:
+                aux = arista[0]
+            if arista[1] > aux:
+                aux = arista[1]
+        return aux
+
     def obtenerRelaciones (self,grafo):
         matriz = []
         for arista in grafo:
@@ -43,8 +52,12 @@ class FlujoMaximoView(APIView):
                     "rta": 0,
                     "error": "El grafo es requerido."
                 }, status=400)
-            fuente = request.data.get('fuente', -1)
+            fuente = request.data.get('fuente', 1)
+            
             sumidero = request.data.get('sumidero', -1)
+            if sumidero == -1:
+                sumidero = self.buscarMaximo(grafo)
+            print (sumidero)
             numNodos = request.data.get('nodos', 0)
             if numNodos <= 0:
                 return Response({

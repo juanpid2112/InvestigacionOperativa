@@ -10,7 +10,14 @@ class DijkstraView(APIView):
             if not [arista[0],arista[1]] in matriz:
                 matriz.append ([arista[0],arista[1]])
         return matriz
-
+    def buscarMaximo (self,grafo):
+        aux = -1
+        for arista in grafo:
+            if arista[0] > aux:
+                aux = arista[0]
+            if arista[1] > aux:
+                aux = arista[1]
+        return aux
     def post(self, request, *args, **kwargs):
         try:
             grafo = request.data.get('aristas', [])
@@ -21,6 +28,7 @@ class DijkstraView(APIView):
                     "error": "El grafo es requerido."
                 }, status=400)
             if numNodos > 0:
+                aux = grafo
                 grafo, error = convertir_a_matriz_adyacencia_bidireccional(grafo, numNodos)
                 if grafo is None:
                     return Response({
@@ -28,7 +36,9 @@ class DijkstraView(APIView):
                         "error": error
                     }, status=400)
                 origen = request.data.get('origen', 1)
-                destino = request.data.get('destino', 1)
+                destino = request.data.get('destino', -1)
+                if destino == -1:
+                    destino = self.buscarMaximo(aux)
                 
                 # Ajustar los índices para que empiecen desde 1
                 if origen <= 0 or origen > numNodos or destino <= 0 or destino > numNodos:
