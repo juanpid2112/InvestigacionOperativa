@@ -10,9 +10,13 @@ def convertir_a_matriz_adyacencia_bidireccional(aristas, num_vertices):
         
         origen, destino, peso1, peso2 = arista
         
+        # Ajustar los índices para que empiecen desde 1
+        origen -= 1
+        destino -= 1
+        
         # Verificar que los nodos estén dentro del rango permitido
         if origen < 0 or destino < 0 or origen >= num_vertices or destino >= num_vertices:
-            print(f"Índices de nodos inválidos: {origen}, {destino}")
+            print(f"Índices de nodos inválidos: {origen + 1}, {destino + 1}")
             return None
         
         # Asignar los pesos a la matriz para grafo no dirigido
@@ -22,3 +26,4 @@ def convertir_a_matriz_adyacencia_bidireccional(aristas, num_vertices):
     # Imprimir la matriz de adyacencia para verificación
     print(f"Matriz de Adyacencia: {matriz}")
     return matriz
+

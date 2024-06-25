@@ -1,23 +1,28 @@
 def convertir_a_matriz_adyacencia_bidireccional(aristas, num_vertices):
-    aux = []
-    for x in range(num_vertices):
-        aux.append(x)
-    verticeMayor = -1
+    # Crear una matriz de adyacencia inicializada en 0
+    matriz = [[0 for _ in range(num_vertices)] for _ in range(num_vertices)]
+    
+    # Rellenar la matriz con los valores proporcionados por las aristas
     for arista in aristas:
-        if not arista[0] in aux or not arista[1] in aux:#Verifico que la arista este en los valores posibles
+        if len(arista) != 4:
+            print(f"Formato de arista inválido: {arista}")
             return None
-        if arista[0] > verticeMayor:
-            verticeMayor = arista[0]
-        if arista[1] > verticeMayor:
-            verticeMayor = arista[1]
-    if verticeMayor != num_vertices-1:
-        return None
-    try:
-        matriz = [[0 for _ in range(num_vertices)] for _ in range(num_vertices)]
-        for arista in aristas:
-            origen, destino, peso1, peso2 = arista
-            matriz[origen][destino] = peso1
-            matriz[destino][origen] = peso2
-    except Exception as e:
-        matriz = None
+        
+        origen, destino, peso1, peso2 = arista
+        
+        # Ajustar los índices para que empiecen desde 1
+        origen -= 1
+        destino -= 1
+        
+        # Verificar que los nodos estén dentro del rango permitido
+        if origen < 0 or destino < 0 or origen >= num_vertices or destino >= num_vertices:
+            print(f"Índices de nodos inválidos: {origen + 1}, {destino + 1}")
+            return None
+        
+        # Asignar los pesos a la matriz para grafo no dirigido
+        matriz[origen][destino] = peso1
+        matriz[destino][origen] = peso2
+    
+    # Imprimir la matriz de adyacencia para verificación
+    print(f"Matriz de Adyacencia: {matriz}")
     return matriz
