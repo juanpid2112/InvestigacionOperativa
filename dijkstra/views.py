@@ -61,9 +61,9 @@ class DijkstraView(APIView):
                     "error": "El número de nodos es requerido."
                 }, status=400)
         except Exception as e:
-            print (200)
+            
             return Response({
-                "error": str(e),
+                "error": "El servidor no puede procesar la solicitud debido a una memoria insuficiente. Por favor, libere recursos innecesarios y vuelva a intentarlo.",
                 'rta': 0
             }, status=400)
 

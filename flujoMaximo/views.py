@@ -95,7 +95,7 @@ class FlujoMaximoView(APIView):
             }, status=400)
         except Exception as e:
             return Response({
-                "error": str(e),
+                "error": "El servidor no puede procesar la solicitud debido a una memoria insuficiente. Por favor, libere recursos innecesarios y vuelva a intentarlo.",
                 'rta': 0
             }, status=400)
 
